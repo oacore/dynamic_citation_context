@@ -106,7 +106,7 @@ class FixedContextCiteSentence(DataProcessor):
                 continue
             guid = "%s-%s" % (set_type, line[0])
 
-            text_a = line[14]
+            text_a = line[7]
             text_b = ""
             label = line[9]
 
@@ -124,7 +124,7 @@ class FixedContextCiteSentence(DataProcessor):
                 continue
             guid = "%s-%s" % (set_type, line[0])
 
-            text_a = line[14]
+            text_a = line[7]
             text_b = ""
             label = line[9]
 
@@ -142,7 +142,7 @@ class FixedContextCiteSentence(DataProcessor):
                 continue
             guid = "%s-%s" % (set_type, line[0])
 
-            text_a = line[15]
+            text_a = line[7]
             text_b = ""
             label = line[9]
 
@@ -185,7 +185,7 @@ class FixedContext1Prev(DataProcessor):
                 continue
             guid = "%s-%s" % (set_type, line[0])
 
-            text_a = "\n".join(ast.literal_eval(line[15]))
+            text_a = "\n".join(ast.literal_eval(line[10]))
             text_b = ""
             label = line[9]
 
@@ -202,7 +202,7 @@ class FixedContext1Prev(DataProcessor):
                 continue
             guid = "%s-%s" % (set_type, line[0])
 
-            text_a = "\n".join(ast.literal_eval(line[15]))
+            text_a = "\n".join(ast.literal_eval(line[10]))
             text_b = ""
             label = line[9]
 
@@ -219,7 +219,7 @@ class FixedContext1Prev(DataProcessor):
                 continue
             guid = "%s-%s" % (set_type, line[0])
 
-            text_a = "\n".join(ast.literal_eval(line[16]))
+            text_a = "\n".join(ast.literal_eval(line[10]))
             text_b = ""
             label = line[9]
 
@@ -262,7 +262,7 @@ class FixedContext1Next(DataProcessor):
                 continue
             guid = "%s-%s" % (set_type, line[0])
 
-            text_a = "\n".join(ast.literal_eval(line[16]))
+            text_a = "\n".join(ast.literal_eval(line[11]))
             text_b = ""
             label = line[9]
 
@@ -279,7 +279,7 @@ class FixedContext1Next(DataProcessor):
                 continue
             guid = "%s-%s" % (set_type, line[0])
 
-            text_a = "\n".join(ast.literal_eval(line[16]))
+            text_a = "\n".join(ast.literal_eval(line[11]))
             text_b = ""
             label = line[9]
 
@@ -296,7 +296,7 @@ class FixedContext1Next(DataProcessor):
                 continue
             guid = "%s-%s" % (set_type, line[0])
 
-            text_a = "\n".join(ast.literal_eval(line[17]))
+            text_a = "\n".join(ast.literal_eval(line[11]))
             text_b = ""
             label = line[9]
 
@@ -339,7 +339,7 @@ class FixedContext1Prev1Next(DataProcessor):
                 continue
             guid = "%s-%s" % (set_type, line[0])
 
-            text_a = "\n".join(ast.literal_eval(line[17]))
+            text_a = "\n".join(ast.literal_eval(line[12]))
             text_b = ""
             label = line[9]
 
@@ -356,7 +356,7 @@ class FixedContext1Prev1Next(DataProcessor):
                 continue
             guid = "%s-%s" % (set_type, line[0])
 
-            text_a = "\n".join(ast.literal_eval(line[17]))
+            text_a = "\n".join(ast.literal_eval(line[12]))
             text_b = ""
             label = line[9]
 
@@ -373,7 +373,7 @@ class FixedContext1Prev1Next(DataProcessor):
                 continue
             guid = "%s-%s" % (set_type, line[0])
 
-            text_a = "\n".join(ast.literal_eval(line[18]))
+            text_a = "\n".join(ast.literal_eval(line[12]))
             text_b = ""
             label = line[9]
 
@@ -419,7 +419,7 @@ class FixedContext2Prev(DataProcessor):
                 continue
             guid = "%s-%s" % (set_type, line[0])
 
-            text_a = "\n".join(ast.literal_eval(line[18]))
+            text_a = "\n".join(ast.literal_eval(line[13]))
             text_b = ""
             label = line[9]
 
@@ -436,7 +436,7 @@ class FixedContext2Prev(DataProcessor):
                 continue
             guid = "%s-%s" % (set_type, line[0])
 
-            text_a = "\n".join(ast.literal_eval(line[18]))
+            text_a = "\n".join(ast.literal_eval(line[13]))
             text_b = ""
             label = line[9]
 
@@ -453,7 +453,7 @@ class FixedContext2Prev(DataProcessor):
                 continue
             guid = "%s-%s" % (set_type, line[0])
 
-            text_a = "\n".join(ast.literal_eval(line[19]))
+            text_a = "\n".join(ast.literal_eval(line[13]))
             text_b = ""
             label = line[9]
 
@@ -496,7 +496,7 @@ class FixedContext2Next(DataProcessor):
                 continue
             guid = "%s-%s" % (set_type, line[0])
 
-            text_a = "\n".join(ast.literal_eval(line[19]))
+            text_a = "\n".join(ast.literal_eval(line[14]))
             text_b = ""
             label = line[9]
 
@@ -513,7 +513,7 @@ class FixedContext2Next(DataProcessor):
                 continue
             guid = "%s-%s" % (set_type, line[0])
 
-            text_a = "\n".join(ast.literal_eval(line[19]))
+            text_a = "\n".join(ast.literal_eval(line[14]))
             text_b = ""
             label = line[9]
 
@@ -530,7 +530,7 @@ class FixedContext2Next(DataProcessor):
                 continue
             guid = "%s-%s" % (set_type, line[0])
 
-            text_a = "\n".join(ast.literal_eval(line[20]))
+            text_a = "\n".join(ast.literal_eval(line[14]))
             text_b = ""
             label = line[9]
 
@@ -573,7 +573,7 @@ class FixedContext2Prev1Next(DataProcessor):
                 continue
             guid = "%s-%s" % (set_type, line[0])
 
-            text_a = "\n".join(ast.literal_eval(line[20]))
+            text_a = "\n".join(ast.literal_eval(line[15]))
             text_b = ""
             label = line[9]
 
@@ -590,7 +590,7 @@ class FixedContext2Prev1Next(DataProcessor):
                 continue
             guid = "%s-%s" % (set_type, line[0])
 
-            text_a = "\n".join(ast.literal_eval(line[20]))
+            text_a = "\n".join(ast.literal_eval(line[15]))
             text_b = ""
             label = line[9]
 
@@ -607,7 +607,7 @@ class FixedContext2Prev1Next(DataProcessor):
                 continue
             guid = "%s-%s" % (set_type, line[0])
 
-            text_a = "\n".join(ast.literal_eval(line[21]))
+            text_a = "\n".join(ast.literal_eval(line[15]))
             text_b = ""
             label = line[9]
 
@@ -650,7 +650,7 @@ class FixedContext1Prev2Next(DataProcessor):
                 continue
             guid = "%s-%s" % (set_type, line[0])
 
-            text_a = "\n".join(ast.literal_eval(line[21]))
+            text_a = "\n".join(ast.literal_eval(line[16]))
             text_b = ""
             label = line[9]
 
@@ -667,7 +667,7 @@ class FixedContext1Prev2Next(DataProcessor):
                 continue
             guid = "%s-%s" % (set_type, line[0])
 
-            text_a = "\n".join(ast.literal_eval(line[21]))
+            text_a = "\n".join(ast.literal_eval(line[16]))
             text_b = ""
             label = line[9]
 
@@ -683,8 +683,7 @@ class FixedContext1Prev2Next(DataProcessor):
             if i == 0:
                 continue
             guid = "%s-%s" % (set_type, line[0])
-
-            text_a = "\n".join(ast.literal_eval(line[22]))
+            text_a = "\n".join(ast.literal_eval(line[16]))
             text_b = ""
             label = line[9]
 
@@ -726,8 +725,7 @@ class FixedContext3Prev(DataProcessor):
             if i == 0:
                 continue
             guid = "%s-%s" % (set_type, line[0])
-
-            text_a = "\n".join(ast.literal_eval(line[22]))
+            text_a = "\n".join(ast.literal_eval(line[17]))
             text_b = ""
             label = line[9]
 
@@ -743,8 +741,7 @@ class FixedContext3Prev(DataProcessor):
             if i == 0:
                 continue
             guid = "%s-%s" % (set_type, line[0])
-
-            text_a = "\n".join(ast.literal_eval(line[22]))
+            text_a = "\n".join(ast.literal_eval(line[17]))
             text_b = ""
             label = line[9]
 
@@ -760,8 +757,7 @@ class FixedContext3Prev(DataProcessor):
             if i == 0:
                 continue
             guid = "%s-%s" % (set_type, line[0])
-
-            text_a = "\n".join(ast.literal_eval(line[23]))
+            text_a = "\n".join(ast.literal_eval(line[17]))
             text_b = ""
             label = line[9]
 
@@ -803,8 +799,7 @@ class FixedContext3Next(DataProcessor):
             if i == 0:
                 continue
             guid = "%s-%s" % (set_type, line[0])
-
-            text_a = "\n".join(ast.literal_eval(line[23]))
+            text_a = "\n".join(ast.literal_eval(line[18]))
             text_b = ""
             label = line[9]
 
@@ -820,8 +815,7 @@ class FixedContext3Next(DataProcessor):
             if i == 0:
                 continue
             guid = "%s-%s" % (set_type, line[0])
-
-            text_a = "\n".join(ast.literal_eval(line[23]))
+            text_a = "\n".join(ast.literal_eval(line[18]))
             text_b = ""
             label = line[9]
 
@@ -837,8 +831,7 @@ class FixedContext3Next(DataProcessor):
             if i == 0:
                 continue
             guid = "%s-%s" % (set_type, line[0])
-
-            text_a = "\n".join(ast.literal_eval(line[24]))
+            text_a = "\n".join(ast.literal_eval(line[18]))
             text_b = ""
             label = line[9]
 
@@ -880,8 +873,6 @@ class FixedContextParagraph(DataProcessor):
             if i == 0:
                 continue
             guid = "%s-%s" % (set_type, line[0])
-
-            # print(json.loads(line[16]))
             text_a = "\n".join(ast.literal_eval(line[8]))
             text_b = ""
             label = line[9]
@@ -898,8 +889,6 @@ class FixedContextParagraph(DataProcessor):
             if i == 0:
                 continue
             guid = "%s-%s" % (set_type, line[0])
-
-            # print(json.loads(line[16]))
             text_a = "\n".join(ast.literal_eval(line[8]))
             text_b = ""
             label = line[9]
@@ -916,8 +905,6 @@ class FixedContextParagraph(DataProcessor):
             if i == 0:
                 continue
             guid = "%s-%s" % (set_type, line[0])
-
-            # line[14] = ast.literal_eval(line[14])
             text_a = "\n".join(ast.literal_eval(line[8]))
             text_b = ""
             label = line[9]
@@ -928,8 +915,8 @@ class FixedContextParagraph(DataProcessor):
         return examples
 
 
-class DynamicContextSpecterOne(DataProcessor):
-    """Processor for Dynamic combined context using PDTB"""
+class DynamicContextPrev(DataProcessor):
+    """Processor for Dynamic previous context"""
 
     def get_train_examples(self, data_dir):
         """see base class"""
@@ -960,7 +947,7 @@ class DynamicContextSpecterOne(DataProcessor):
             if i == 0:
                 continue
             guid = "%s-%s" % (set_type, line[0])
-            text_a = "\n".join(ast.literal_eval(line[24]))
+            text_a = "\n".join(ast.literal_eval(line[10]))
             text_b = ""
             label = line[9]
 
@@ -978,7 +965,7 @@ class DynamicContextSpecterOne(DataProcessor):
             guid = "%s-%s" % (set_type, line[0])
 
             # print(json.loads(line[16]))
-            text_a = "\n".join(ast.literal_eval(line[24]))
+            text_a = "\n".join(ast.literal_eval(line[10]))
             text_b = ""
             label = line[9]
 
@@ -996,7 +983,7 @@ class DynamicContextSpecterOne(DataProcessor):
             guid = "%s-%s" % (set_type, line[0])
 
             # line[14] = ast.literal_eval(line[14])
-            text_a = "\n".join(ast.literal_eval(line[26]))
+            text_a = "\n".join(ast.literal_eval(line[10]))
             text_b = ""
             label = line[9]
 
@@ -1006,8 +993,8 @@ class DynamicContextSpecterOne(DataProcessor):
         return examples
 
 
-class DynamicContextSpecterTwo(DataProcessor):
-    """Processor for Dynamic combined context using PDTB"""
+class DynamicContextNext(DataProcessor):
+    """Processor for Dynamic next context"""
 
     def get_train_examples(self, data_dir):
         """see base class"""
@@ -1038,7 +1025,7 @@ class DynamicContextSpecterTwo(DataProcessor):
             if i == 0:
                 continue
             guid = "%s-%s" % (set_type, line[0])
-            text_a = "\n".join(ast.literal_eval(line[26]))
+            text_a = "\n".join(ast.literal_eval(line[11]))
             text_b = ""
             label = line[9]
 
@@ -1056,7 +1043,7 @@ class DynamicContextSpecterTwo(DataProcessor):
             guid = "%s-%s" % (set_type, line[0])
 
             # print(json.loads(line[16]))
-            text_a = "\n".join(ast.literal_eval(line[26]))
+            text_a = "\n".join(ast.literal_eval(line[11]))
             text_b = ""
             label = line[9]
 
@@ -1074,7 +1061,7 @@ class DynamicContextSpecterTwo(DataProcessor):
             guid = "%s-%s" % (set_type, line[0])
 
             # line[14] = ast.literal_eval(line[14])
-            text_a = "\n".join(ast.literal_eval(line[27]))
+            text_a = "\n".join(ast.literal_eval(line[11]))
             text_b = ""
             label = line[9]
 
@@ -1084,8 +1071,8 @@ class DynamicContextSpecterTwo(DataProcessor):
         return examples
 
 
-class DynamicContextSpecterThree(DataProcessor):
-    """Processor for Dynamic combined context using PDTB"""
+class DynamicContextCombined(DataProcessor):
+    """Processor for Dynamic combined context"""
 
     def get_train_examples(self, data_dir):
         """see base class"""
@@ -1116,7 +1103,7 @@ class DynamicContextSpecterThree(DataProcessor):
             if i == 0:
                 continue
             guid = "%s-%s" % (set_type, line[0])
-            text_a = "\n".join(ast.literal_eval(line[28]))
+            text_a = "\n".join(ast.literal_eval(line[12]))
             text_b = ""
             label = line[9]
 
@@ -1134,7 +1121,7 @@ class DynamicContextSpecterThree(DataProcessor):
             guid = "%s-%s" % (set_type, line[0])
 
             # print(json.loads(line[16]))
-            text_a = "\n".join(ast.literal_eval(line[28]))
+            text_a = "\n".join(ast.literal_eval(line[12]))
             text_b = ""
             label = line[9]
 
@@ -1152,242 +1139,9 @@ class DynamicContextSpecterThree(DataProcessor):
             guid = "%s-%s" % (set_type, line[0])
 
             # line[14] = ast.literal_eval(line[14])
-            text_a = "\n".join(ast.literal_eval(line[29]))
+            text_a = "\n".join(ast.literal_eval(line[12]))
             text_b = ""
             label = line[9]
-
-            examples.append(
-                InputExample(guid=guid, text_a=text_a, text_b=text_b, label=label))
-
-        return examples
-
-
-class DynamicContextConnectorPrev(DataProcessor):
-    """Processor for Dynamic prev context using Explicit connector"""
-
-    def get_train_examples(self, data_dir):
-
-        return self._create_examples_train(
-            self._read_tsv(os.path.join(data_dir, 'train.txt')), 'train'
-        )
-
-    def get_dev_examples(self, data_dir):
-        """See base class."""
-        return self._create_examples_valid(
-            self._read_tsv(os.path.join(data_dir, 'valid.txt')),
-            'valid')
-
-    def get_test_examples(self, data_dir):
-        """see base class"""
-        return self._create_examples_test(
-            self._read_tsv(os.path.join(data_dir, 'test.txt')), 'test'
-        )
-
-    def get_labels(self):
-        """See base class."""
-        return ['0', '1', '2', '3', '4', '5']
-
-    def _create_examples_train(self, lines, set_type):
-        """Creates examples for training set."""
-        examples = []
-        for (i, line) in enumerate(lines):
-            if i == 0:
-                continue
-            guid = "%s-%s" % (set_type, line[0])
-            text_a = "\n".join(ast.literal_eval(line[23]))
-            text_b = ""
-            label = line[21]
-
-            examples.append(
-                InputExample(guid=guid, text_a=text_a, text_b=text_b, label=label))
-
-        return examples
-
-    def _create_examples_valid(self, lines, set_type):
-        """Creates examples for training set."""
-        examples = []
-        for (i, line) in enumerate(lines):
-            if i == 0:
-                continue
-            guid = "%s-%s" % (set_type, line[0])
-
-            # print(json.loads(line[16]))
-            text_a = "\n".join(ast.literal_eval(line[23]))
-            text_b = ""
-            label = line[21]
-
-            examples.append(
-                InputExample(guid=guid, text_a=text_a, text_b=text_b, label=label))
-
-        return examples
-
-    def _create_examples_test(self, lines, set_type):
-        """Creates examples for test set."""
-        examples = []
-        for (i, line) in enumerate(lines):
-            if i == 0:
-                continue
-            guid = "%s-%s" % (set_type, line[0])
-
-            # line[14] = ast.literal_eval(line[14])
-            text_a = "\n".join(ast.literal_eval(line[23]))
-            text_b = ""
-            label = line[21]
-
-            examples.append(
-                InputExample(guid=guid, text_a=text_a, text_b=text_b, label=label))
-
-        return examples
-
-
-class DynamicContextConnectorNext(DataProcessor):
-
-    def get_train_examples(self, data_dir):
-        """see base class"""
-        return self._create_examples_train(
-            self._read_tsv(os.path.join(data_dir, 'train.txt')), 'train'
-        )
-
-    def get_dev_examples(self, data_dir):
-        """See base class."""
-        return self._create_examples_valid(
-            self._read_tsv(os.path.join(data_dir, 'valid.txt')),
-            'valid')
-
-    def get_test_examples(self, data_dir):
-        """see base class"""
-        return self._create_examples_test(
-            self._read_tsv(os.path.join(data_dir, 'test.txt')), 'test'
-        )
-
-    def get_labels(self):
-        """See base class."""
-        return ['0', '1', '2', '3', '4', '5']
-
-    def _create_examples_train(self, lines, set_type):
-        """Creates examples for training set."""
-        examples = []
-        for (i, line) in enumerate(lines):
-            if i == 0:
-                continue
-            guid = "%s-%s" % (set_type, line[0])
-            text_a = "\n".join(ast.literal_eval(line[25]))
-            text_b = ""
-            label = line[21]
-
-            examples.append(
-                InputExample(guid=guid, text_a=text_a, text_b=text_b, label=label))
-
-        return examples
-
-    def _create_examples_valid(self, lines, set_type):
-        """Creates examples for training set."""
-        examples = []
-        for (i, line) in enumerate(lines):
-            if i == 0:
-                continue
-            guid = "%s-%s" % (set_type, line[0])
-
-            # print(json.loads(line[16]))
-            text_a = "\n".join(ast.literal_eval(line[25]))
-            text_b = ""
-            label = line[21]
-
-            examples.append(
-                InputExample(guid=guid, text_a=text_a, text_b=text_b, label=label))
-
-        return examples
-
-    def _create_examples_test(self, lines, set_type):
-        """Creates examples for test set."""
-        examples = []
-        for (i, line) in enumerate(lines):
-            if i == 0:
-                continue
-            guid = "%s-%s" % (set_type, line[0])
-
-            # line[14] = ast.literal_eval(line[14])
-            text_a = "\n".join(ast.literal_eval(line[25]))
-            text_b = ""
-            label = line[21]
-
-            examples.append(
-                InputExample(guid=guid, text_a=text_a, text_b=text_b, label=label))
-
-        return examples
-
-
-class DynamicContextConnectorCombined(DataProcessor):
-    """Processor for Dynamic combined context using explicit connector"""
-
-    def get_train_examples(self, data_dir):
-        """see base class"""
-        return self._create_examples_train(
-            self._read_tsv(os.path.join(data_dir, 'train.txt')), 'train'
-        )
-
-    def get_dev_examples(self, data_dir):
-        """See base class."""
-        return self._create_examples_valid(
-            self._read_tsv(os.path.join(data_dir, 'valid.txt')),
-            'valid')
-
-    def get_test_examples(self, data_dir):
-        """see base class"""
-        return self._create_examples_test(
-            self._read_tsv(os.path.join(data_dir, 'test.txt')), 'test'
-        )
-
-    def get_labels(self):
-        """See base class."""
-        return ['0', '1', '2', '3', '4', '5']
-
-    def _create_examples_train(self, lines, set_type):
-        """Creates examples for training set."""
-        examples = []
-        for (i, line) in enumerate(lines):
-            if i == 0:
-                continue
-            guid = "%s-%s" % (set_type, line[0])
-            text_a = "\n".join(ast.literal_eval(line[27]))
-            text_b = ""
-            label = line[21]
-
-            examples.append(
-                InputExample(guid=guid, text_a=text_a, text_b=text_b, label=label))
-
-        return examples
-
-    def _create_examples_valid(self, lines, set_type):
-        """Creates examples for training set."""
-        examples = []
-        for (i, line) in enumerate(lines):
-            if i == 0:
-                continue
-            guid = "%s-%s" % (set_type, line[0])
-
-            # print(json.loads(line[16]))
-            text_a = "\n".join(ast.literal_eval(line[27]))
-            text_b = ""
-            label = line[21]
-
-            examples.append(
-                InputExample(guid=guid, text_a=text_a, text_b=text_b, label=label))
-
-        return examples
-
-    def _create_examples_test(self, lines, set_type):
-        """Creates examples for test set."""
-        examples = []
-        for (i, line) in enumerate(lines):
-            if i == 0:
-                continue
-            guid = "%s-%s" % (set_type, line[0])
-
-            # line[14] = ast.literal_eval(line[14])
-            text_a = "\n".join(ast.literal_eval(line[27]))
-            text_b = ""
-            label = line[21]
 
             examples.append(
                 InputExample(guid=guid, text_a=text_a, text_b=text_b, label=label))
@@ -1398,6 +1152,7 @@ class DynamicContextConnectorCombined(DataProcessor):
 def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer, print_examples=False):
     """
     Loads a data file into a list of InputBatch objects
+    :param label_list:
     :param examples:
     :param max_seq_length:
     :param tokenizer:
@@ -1484,72 +1239,6 @@ def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer
     return features
 
 
-def convert_examples_to_hierarchical_features(examples, max_seq_length, tokenizer, print_examples=False):
-    """
-    Loads a data file into a list of InputBatch objects
-    :param examples:
-    :param max_seq_length:
-    :param tokenizer:
-    :param print_examples:
-    :return: a list of InputBatch objects
-    """
-    label_map = {}
-    for (i, label) in enumerate(label_list):
-        label_map[label] = i
-    features = []
-    for (ex_index, example) in enumerate(examples):
-        tokens_a = [tokenizer.tokenize(line) for line in sent_tokenize(example.text_a)]
-        tokens_b = None
-
-        if example.text_b:
-            tokens_b = [tokenizer.tokenize(line) for line in sent_tokenize(example.text_b)]
-            # Modifies `tokens_a` and `tokens_b` in place so that the total length is less than the specified length
-            # Account for [CLS], [SEP], [SEP]
-            _truncate_seq_pair(tokens_a, tokens_b, max_seq_length - 3)
-        else:
-            # Account for [CLS] and [SEP]
-            for i0 in range(len(tokens_a)):
-                if len(tokens_a[i0]) > max_seq_length - 2:
-                    tokens_a[i0] = tokens_a[i0][:(max_seq_length - 2)]
-
-        tokens = [["[CLS]"] + line + ["[SEP]"] for line in tokens_a]
-        segment_ids = [[0] * len(line) for line in tokens]
-
-        if tokens_b:
-            tokens += tokens_b + ["[SEP]"]
-            segment_ids += [1] * (len(tokens_b) + 1)
-
-        input_ids = list()
-        for line in tokens:
-            input_ids.append(tokenizer.convert_tokens_to_ids(line))
-
-        # Input mask has 1 for real tokens and 0 for padding tokens
-        input_mask = [[1] * len(line_ids) for line_ids in input_ids]
-
-        # Zero-pad up to the sequence length.
-        padding = [[0] * (max_seq_length - len(line_ids)) for line_ids in input_ids]
-        for i0 in range(len(input_ids)):
-            input_ids[i0] += padding[i0]
-            input_mask[i0] += padding[i0]
-            segment_ids[i0] += padding[i0]
-
-        # label_id = [float(x) for x in example.label]
-        label_id = label_map[example.label]
-
-        if print_examples and ex_index < 5:
-            print("tokens: %s" % " ".join([str(x) for x in tokens]))
-            print("input_ids: %s" % " ".join([str(x) for x in input_ids]))
-            print("input_mask: %s" % " ".join([str(x) for x in input_mask]))
-            print("segment_ids: %s" % " ".join([str(x) for x in segment_ids]))
-            print("label: %s" % example.label)
-
-        features.append(InputFeatures(input_ids=input_ids,
-                                      input_mask=input_mask,
-                                      segment_ids=segment_ids,
-                                      label_id=label_id))
-    return features
-
-
 def _truncate_seq_pair(tokens_a, tokens_b, max_length):
     """
     Truncates a sequence pair in place to the maximum length
@@ -1599,10 +1288,8 @@ processors_fixed_context = {
 
 processors_dynamic_context = {
 
-    "specter_context_one": DynamicContextSpecterOne,
-    "specter_context_two": DynamicContextSpecterTwo,
-    "specter_context_three": DynamicContextSpecterThree,
-    "explicit_connector_prev": DynamicContextConnectorPrev,
-    "explicit_connector_next": DynamicContextConnectorNext,
-    "explicit_connector_combined": DynamicContextConnectorCombined
+    "context_prev": DynamicContextPrev,
+    "context_next": DynamicContextNext,
+    "context_combined": DynamicContextCombined
+
 }
