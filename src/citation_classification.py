@@ -3,79 +3,32 @@ import os
 import argparse
 import torch
 import logging
-import glob
-import time
 import csv
 import datetime
 import random
 from tqdm import trange, tqdm
 import numpy as np
-import torch.nn.functional as F
 from sklearn.metrics import f1_score
-from utils_citation_classification import processors_fixed_context, output_modes, CITATION_CLASSIFICATION_NUM_LABELS, \
-    convert_examples_to_features, convert_examples_to_hierarchical_features, processors_dynamic_context
-from torch.utils.data import DataLoader, RandomSampler, TensorDataset
-from tensorboardX import SummaryWriter
-# from transformers import set_seed
-
-from transformers import AdamW, get_linear_schedule_with_warmup
-from transformers import (AutoConfig, AutoTokenizer, AutoModel, AutoModelForSequenceClassification,
-                          BertConfig, BertForSequenceClassification, BertTokenizer,
-                          XLNetConfig, XLNetForSequenceClassification, XLNetTokenizer,
-                          XLMConfig, XLMForSequenceClassification, XLMTokenizer)
+from classification_utils import processors_fixed_context, output_modes, CITATION_CLASSIFICATION_NUM_LABELS, \
+    convert_examples_to_features, processors_dynamic_context
+from torch.utils.data import DataLoader, RandomSampler, TensorDataset, DistributedSampler
+from data import DATA_PROCESSED_DIR
+from transformers import AdamW
+from transformers import (AutoTokenizer, AutoModel)
 
 logger = logging.getLogger(__name__)
-
-MODEL_CLASSES = {
-    'bert': (BertConfig, BertForSequenceClassification, BertTokenizer),
-    'xlnet': (XLNetConfig, XLNetForSequenceClassification, XLNetTokenizer),
-    'xlm': (XLMConfig, XLMForSequenceClassification, XLMTokenizer),
-    'auto': (AutoConfig, AutoModel, AutoTokenizer)
-}
-
-# num_train_optimization_steps = None
-
 tokenizer = AutoTokenizer.from_pretrained('allenai/scibert_scivocab_uncased')
-
-# LMModel = AutoModelForSequenceClassification.from_pretrained('allenai/scibert_scivocab_uncased')
-LMModel = AutoModel.from_pretrained('allenai/scibert_scivocab_uncased')
+#LMModel = AutoModel.from_pretrained('allenai/scibert_scivocab_uncased')
 
 # tokenizer = AutoTokenizer.from_pretrained(args.model_name_or_path)
 # LMModel = AutoModel.from_pretrained(args.model_name_or_path)
-
-# drop_out = 0.2
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-"""    
-class LMClass(torch.nn.Module):
-    def __init__ (self):
-        super(LMClass, self).__init__()
-        self.model = LMModel
-        self.pre_classifier = torch.nn.Linear(768, 768)
-        self.dropout = torch.nn.Dropout(0.1)
-        self.classifier = torch.nn.Linear(768, 6)
-
-    def forward(self, input_ids, token_type_ids, attention_mask, labels=None):
-
-
-        outputs = self.model(input_ids, token_type_ids, attention_mask)
-        hidden_state1 = outputs[0]
-
-        pooler = hidden_state1[:, 0]
-        pooler = self.pre_classifier(pooler)
-        pooler = torch.nn.ReLU()(pooler)
-        pooler = self.dropout(pooler)
-        output = self.classifier(pooler)
-
-        return output
-"""
-
 
 class LMClass(torch.nn.Module):
-    def __init__(self):
+    def __init__(self, model_path):
         super(LMClass, self).__init__()
-        self.model = LMModel
-        # self.pre_classifier = torch.nn.Linear(768, 768)
+        self.model = AutoModel.from_pretrained(model_path)
         self.dropout = torch.nn.Dropout(0.1)
         self.classifier = torch.nn.Linear(768, 6)
 
@@ -140,7 +93,7 @@ def train(args, model, loss_function, optimizer, train_dataloader, eval_dataload
             nb_tr_examples += input_ids.size(0)
             nb_tr_steps += 1
             if (step + 1) % args.gradient_accumulation_steps == 0:
-                optimizer.step()  # We have accumulated enought gradients
+                optimizer.step()
                 model.zero_grad()
                 global_step += 1
 
@@ -178,8 +131,6 @@ def train(args, model, loss_function, optimizer, train_dataloader, eval_dataload
 
     return
 
-    # torch.save(model.state_dict(), args.snapshot_path)
-
 
 def evaluate(args, model, eval_dataloader, loss_function, split=None):
     model.eval()
@@ -187,7 +138,6 @@ def evaluate(args, model, eval_dataloader, loss_function, split=None):
     nb_eval_steps, nb_eval_examples = 0, 0
 
     predicted_labels, target_labels = list(), list()
-    # with open(os.path.join(args.output_dir, "results_ep"+str(epoch)+".txt"),"w") as f:
     for input_ids, input_mask, segment_ids, label_ids in tqdm(eval_dataloader, desc="Evaluate"):
         input_ids = input_ids.to(device)
         input_mask = input_mask.to(device)
@@ -195,21 +145,17 @@ def evaluate(args, model, eval_dataloader, loss_function, split=None):
         label_ids = label_ids.to(device)
 
         with torch.no_grad():
-            # tmp_eval_loss, logits = model(input_ids, segment_ids, input_mask, label_ids)
             logits = model(input_ids, segment_ids, input_mask, label_ids)
-            # tmp_eval_loss = F.cross_entropy(logits, torch.argmax(label_ids, dim=1))
             tmp_eval_loss = loss_function(logits, label_ids)
 
         logits = logits.detach().cpu().numpy()
         label_ids = label_ids.to('cpu').numpy()
+
         outputs = np.argmax(logits, axis=1)
         predicted_labels.extend(outputs)
         target_labels.extend(label_ids)
 
-        # for output in outputs:
-        #    f.write(str(output)+"\n")
         tmp_eval_accuracy = np.sum(outputs == label_ids)
-
         eval_loss += tmp_eval_loss.mean().item()
         eval_accuracy += tmp_eval_accuracy
 
@@ -222,15 +168,14 @@ def evaluate(args, model, eval_dataloader, loss_function, split=None):
     micro_f1 = f1_score(target_labels, predicted_labels, average='micro')
 
     if split == 'test':
-        return eval_loss, eval_accuracy, macro_f1, micro_f1, predicted_labels
+        return eval_loss, eval_accuracy, macro_f1, micro_f1, predicted_labels, target_labels
 
     else:
         return eval_loss, eval_accuracy, macro_f1, micro_f1
 
 
-def load_and_cache_examples(args, task, tokenizer, processor, output_mode, label_list, evaluate, test):
-    # processor = processors[task]()
-    # output_mode = output_modes[task]
+def load_and_cache_examples(args, tokenizer, processor, label_list, evaluate, test):
+
     # Load data features from cache or dataset file
     if evaluate and not test:
         split = 'dev'
@@ -241,7 +186,6 @@ def load_and_cache_examples(args, task, tokenizer, processor, output_mode, label
 
     logger.info("Creating features from dataset file at %s", args.data_dir)
 
-    # label_list = processor.get_labels()
     if split == 'dev':
         print('Getting validation examples')
         examples = processor.get_dev_examples(args.data_dir)
@@ -264,6 +208,8 @@ def load_and_cache_examples(args, task, tokenizer, processor, output_mode, label
     padded_segment_ids = torch.tensor(unpadded_segment_ids, dtype=torch.long)
     label_ids = torch.tensor([f.label_id for f in features], dtype=torch.long)
 
+    # tensors = [padded_input_ids, padded_input_mask, padded_segment_ids, label_ids]
+
     tensor_dataset = TensorDataset(padded_input_ids, padded_input_mask, padded_segment_ids, label_ids)
 
     return tensor_dataset
@@ -274,15 +220,16 @@ def main():
     ## Required parameters
     parser.add_argument("--data_dir", default=None, type=str, required=True,
                         help="The input data dir for the task.")
-    parser.add_argument("--model_type", default=None, type=str, required=True,
-                        help="Model type used for classification, ex. bert/auto/xlm")
+    parser.add_argument("--data_set", default='sdp_act', type=str, required=True,
+                        help="The data set used for classification - sdp_act or acl_arc")
+    parser.add_argument("--context_type", default='non_contiguous', type=str, required=True,
+                        help="The citation context used - 1. fixed_context, 2. contiguous or 3. non_contiguous.")
     parser.add_argument("--model_name_or_path", default=None, type=str, required=False,
                         help="Path to pre-trained model")
     parser.add_argument("--task_name", default=None, type=str, required=True,
                         help="Name of the task - citation_function/citation_influence")
     parser.add_argument("--context_window", default=None, type=str, required=True,
-                        help="Fixed context window size on which training/testing has to be done. Available options given in the list: " + ", ".join(
-                            processors_fixed_context.keys()))
+                        help="Fixed/dynamic context window size on which training/testing has to be done.")
     parser.add_argument("--output_dir", default=None, type=str, required=True,
                         help="The output directory where the model predictions and checkpoints will be written.")
 
@@ -368,13 +315,17 @@ def main():
     set_seed(args.seed)
 
     args.context_window = args.context_window.lower()
-    # include the following code
-    # if args.context_window not in processors_fixed_context:
-    if args.context_window not in processors_dynamic_context:
-        raise ValueError('Fixed context window size: %s not found', args.context_window)
 
-    # processors = processors_fixed_context[args.context_window]()
-    processors = processors_dynamic_context[args.context_window]()
+    input_dir = DATA_PROCESSED_DIR / f"{args.citation_context}_{args.data_set}/"
+    if not args.data_dir == input_dir:
+        raise ValueError('Please generate the citation context before proceeding to classification')
+
+    if args.context_window not in processors_dynamic_context:
+        #raise ValueError('Fixed context window size: %s not found', args.context_window)
+        processors = processors_fixed_context[args.context_window]()
+    else:
+        processors = processors_dynamic_context[args.context_window]()
+
     args.output_mode = output_modes[args.task_name]
     label_list = processors.get_labels()
     args.num_labels = CITATION_CLASSIFICATION_NUM_LABELS[args.task_name]
@@ -384,17 +335,17 @@ def main():
         os.makedirs(os.path.join(args.output_dir, args.context_window))
 
     args.model_type = args.model_type.lower()
-
-    model = LMClass()
+    model = LMClass(args.model_name_or_path)
 
     model.to(args.device)
 
-    to_write = list()
+    to_write_predicted = list()
+    to_write_actual = list()
 
     logger.info("Training/evaluation parameters %s", args)
-    train_tensor = load_and_cache_examples(args, args.task_name, tokenizer, processors, args.output_mode, label_list,
+    train_tensor = load_and_cache_examples(args, tokenizer, processors, label_list,
                                            evaluate=False, test=False)
-    dev_tensor = load_and_cache_examples(args, args.task_name, tokenizer, processors, args.output_mode, label_list,
+    dev_tensor = load_and_cache_examples(args, tokenizer, processors, label_list,
                                          evaluate=True, test=False)
     args.train_batch_size = args.per_gpu_train_batch_size * max(1, args.n_gpu)
     args.eval_batch_size = args.per_gpu_eval_batch_size * max(1, args.n_gpu)
@@ -404,10 +355,13 @@ def main():
     train_sampler = RandomSampler(full_train_data)
     train_dataloader = DataLoader(full_train_data, sampler=train_sampler, batch_size=args.test_batch_size)
 
-    weights = [0.30435841, 1.34843581, 2.91375291, 7.57575758, 1.78062678, 1.06837607]
+    if args.data_dir == 'sdp_act':
+        weights = [0.30435841, 1.34843581, 2.91375291, 7.57575758, 1.78062678, 1.06837607] #sdp_act
+    else:
+        weights = [0.32256169, 0.92424242, 4.65254237, 4.81578947, 3.8125, 0.88263666]  # acl_arc
+
     class_weights = torch.FloatTensor(weights).to(device)
     loss_function = torch.nn.CrossEntropyLoss(weight=class_weights)
-
     no_decay = ['bias', 'gamma', 'beta']
 
     optimizer_parameters = [
@@ -418,14 +372,12 @@ def main():
     ]
 
     optimizer = AdamW(optimizer_parameters, lr=args.learning_rate, eps=args.adam_epsilon)
-    # scheduler = get_linear_schedule_with_warmup(optimizer, args.num_warmup_steps, t_total)
 
     # Training
     train(args, model, loss_function, optimizer, train_dataloader)
 
-
     # Evaluation
-    test_tensor = load_and_cache_examples(args, args.task_name, tokenizer, processors, args.output_mode, label_list,
+    test_tensor = load_and_cache_examples(args, tokenizer, processors, label_list,
                                           evaluate=True, test=True)
 
     if args.local_rank == -1:
@@ -434,22 +386,31 @@ def main():
         testdata_sampler = DistributedSampler(test_tensor)
 
     test_dataloader = DataLoader(test_tensor, sampler=testdata_sampler, batch_size=args.test_batch_size)
-    # if args.do_eval:
-    #    model.load_state_dict(torch.load(args.snapshot_path))
-
     output_model_file = os.path.join(args.output_dir, args.context_window, 'pytorch_model.bin')
     torch.save(model.state_dict(), output_model_file)
-    eval_loss, eval_accuracy, macro_f1, micro_f1, predicted_labels = evaluate(args, model, test_dataloader,
-                                                                              loss_function, split='test')
-    submission_file = open(os.path.join(args.output_dir, args.context_window, 'submission.csv'), 'w+')
-    print(predicted_labels)
-    for index, label in enumerate(predicted_labels):
-        to_write.append(['CCT' + str(index + 1), label])
+    eval_loss, eval_accuracy, macro_f1, micro_f1, predicted_labels, target_labels = evaluate(args, model,
+                                                                                             test_dataloader,
+                                                                                             loss_function,
+                                                                                             split='test')
+    ground_truth_file = open(os.path.join(args.output_dir, args.context_window, 'ground_truth.csv'), 'w+')
+    prediction_file = open(os.path.join(args.output_dir, args.context_window, 'prediction.csv'), 'w+')
 
-    submission_file.write('unique_id,citation_class_label' + '\n')
-    cw = csv.writer(submission_file)
-    cw.writerows(to_write)
-    submission_file.close()
+    for idx1, pr in enumerate(predicted_labels):
+        to_write_predicted.append(['CCT' + str(idx1 + 1), pr])
+
+    prediction_file.write('unique_id,citation_class_label' + '\n')
+    predictions = csv.writer(prediction_file)
+    predictions.writerows(to_write_predicted)
+    prediction_file.close()
+
+    for idx2, tr in enumerate(target_labels):
+        to_write_actual.append(['CCT' + str(idx2 + 1), tr])
+
+    ground_truth_file.write('unique_id,citation_class_label' + '\n')
+    actual = csv.writer(ground_truth_file)
+    actual.writerows(to_write_actual)
+    ground_truth_file.close()
+
     test_results = open(os.path.join(args.output_dir, args.context_window, 'results_test.txt'), 'w+')
     test_results.write("Testdata Results:" + '\n')
     test_results.write("Macro F-Score: {}".format(macro_f1) + '\n')

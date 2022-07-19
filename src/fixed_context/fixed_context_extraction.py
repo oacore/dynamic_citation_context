@@ -4,10 +4,9 @@ from collections import OrderedDict
 import argparse
 from difflib import SequenceMatcher
 from sklearn.model_selection import train_test_split
+from data import DATA_PROCESSED_DIR
+import os
 
-
-DATA_DIR = "/Users/suchethank/Desktop/updated_sdp/fixed_context/"
-OUTPUT_DIR = "/Users/suchethank/Desktop/"
 
 def get_prev_next_context(paragraph, citing_sent_index):
     context_prev = list()
@@ -18,15 +17,10 @@ def get_prev_next_context(paragraph, citing_sent_index):
         for sent in paragraph:
 
             non_citing_sent_index = paragraph.index(sent)
-
             if non_citing_sent_index < citing_sent_index:
-
                 context_prev.append(unidecode(sent))
-
             elif non_citing_sent_index > citing_sent_index:
-
                 context_next.append(unidecode(sent))
-
             else:
                 continue
 
@@ -34,7 +28,6 @@ def get_prev_next_context(paragraph, citing_sent_index):
 
 
 def fixed_prev_next_context(prev_context, citing_sent, next_context, fixed_contexts):
-
 
     if len(prev_context) >= 3 and len(next_context) >= 3:
 
@@ -358,25 +351,33 @@ def main():
 
     parser = argparse.ArgumentParser(description="Code to generate fixed context from paragraph")
     ## Required parameters
-    parser.add_argument("--data_set", default=None, type=str, required=True,
-                        help="Dataset used for the experiment")
-    parser.add_argument("--train_size", default=3000, type=int,
-                        help="Length of trainset. ACT = 3000 and ACL_ARC = 1647")
+    parser.add_argument("--data_set", default='sdp_act', type=str, required=True,
+                        help="Dataset used for the experiment (acl_arc or sdp_act)")
+    parser.add_argument("--train_size", default=3000, type=int, required=True,
+                        help="Length of trainset. sdp_act = 3000 and acl_arc = 1647")
 
     args = parser.parse_args()
+    DATASET_DIR = DATA_PROCESSED_DIR / f"{args.data_set}"
+    if not os.path.exists(os.path.join(DATA_PROCESSED_DIR, f'fixed_context_{args.data_set}')):
+        os.makedirs(os.path.join(DATA_PROCESSED_DIR, f'fixed_context_{args.data_set}'))
+
+    OUTPUT_DIR = os.path.join(DATA_PROCESSED_DIR, f'fixed_context_{args.data_set}')
+
     for dataset in ["train", "test"]:
-        data_df = pd.read_csv(DATA_DIR + f"{args.data_set}_{dataset}.txt", sep="\t", engine="python", dtype=object)
+        data_df = pd.read_csv(DATASET_DIR / f"{dataset}.txt", sep="\t", engine="python", dtype=object)
         fixed_contexts = extract_fixed_context(data_df)
         fixed_context_df = pd.DataFrame(fixed_contexts)
-
         result_df = pd.concat([data_df, fixed_context_df], axis=1)
 
-        result_df.to_csv(OUTPUT_DIR + f"{args.data_set}_{dataset}_v3.txt", sep='\t', encoding='utf-8', index=False)
         if dataset == 'train':
             X_train, X_valid, _, _ = train_test_split(result_df, [0] * args.train_size, test_size=0.166666666,
                                                       random_state=30)
-            X_train.to_csv(OUTPUT_DIR + 'train.txt', sep='\t', encoding='utf-8', index=False)
-            X_valid.to_csv(OUTPUT_DIR + 'valid.txt', sep='\t', encoding='utf-8', index=False)
+            X_train.to_csv(OUTPUT_DIR + '/train.txt', sep='\t', encoding='utf-8', index=False)
+            X_valid.to_csv(OUTPUT_DIR + '/valid.txt', sep='\t', encoding='utf-8', index=False)
+
+        else:
+            result_df.to_csv(OUTPUT_DIR + f"/{dataset}.txt", sep='\t', encoding='utf-8',
+                             index=False)
 
 
 if __name__ == '__main__':
