@@ -1,5 +1,5 @@
 # dynamic_citation_context
-This repository contains datasets and source code for the AACL-IJCNLP, 2022 paper [Dynamic Citation Extraction for Citation Classification](https://aclanthology.org/2022.aacl-main.41.pdf).
+This repository contains datasets and source code for the AACL-IJCNLP, 2022 paper [Dynamic Context Extraction for Citation Classification](https://aclanthology.org/2022.aacl-main.41.pdf).
 
 ## Requirements 
 ```
