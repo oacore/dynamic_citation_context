@@ -1,5 +1,5 @@
 # dynamic_citation_context
-This repository contains datasets and source code for the AACL-IJCNLP, 2022 paper "Dynamic Citation Extraction for Citation Classification"
+This repository contains datasets and source code for the AACL-IJCNLP, 2022 paper [Dynamic Citation Extraction for Citation Classification](https://aclanthology.org/2022.aacl-main.41.pdf).
 
 ## Requirements 
 ```
@@ -64,3 +64,27 @@ python src/citation_classification.py \
 ```
 SDP-ACT is derived from CORE, the contents of which is provided under the ODC Attribution License (ODC-BY 1.0).
 ```
+
+## Citation
+```
+@inproceedings{nambanoor-kunnath-etal-2022-dynamic,
+    title = "Dynamic Context Extraction for Citation Classification",
+    author = "Nambanoor Kunnath, Suchetha  and
+      Pride, David  and
+      Knoth, Petr",
+    editor = "He, Yulan  and
+      Ji, Heng  and
+      Li, Sujian  and
+      Liu, Yang  and
+      Chang, Chua-Hui",
+    booktitle = "Proceedings of the 2nd Conference of the Asia-Pacific Chapter of the Association for Computational Linguistics and the 12th International Joint Conference on Natural Language Processing (Volume 1: Long Papers)",
+    month = nov,
+    year = "2022",
+    address = "Online only",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2022.aacl-main.41",
+    pages = "539--549",
+    abstract = "We investigate the effect of varying citation context window sizes on model performance in citation intent classification. Prior studies have been limited to the application of fixed-size contiguous citation contexts or the use of manually curated citation contexts. We introduce a new automated unsupervised approach for the selection of a dynamic-size and potentially non-contiguous citation context, which utilises the transformer-based document representations and embedding similarities. Our experiments show that the addition of non-contiguous citing sentences improves performance beyond previous results. Evalu- ating on the (1) domain-specific (ACL-ARC) and (2) the multi-disciplinary (SDP-ACT) dataset demonstrates that the inclusion of additional context beyond the citing sentence significantly improves the citation classifi- cation model{'}s performance, irrespective of the dataset{'}s domain. We release the datasets and the source code used for the experiments at: \url{https://github.com/oacore/dynamic_citation_context}",
+}
+```
+
